@@ -5,8 +5,9 @@ const errorHandler = require('./error-handlers/500');
 const notFound = require('./error-handlers/404.js');
 const routes=require('./auth/routes/routes');
 const avengersRouts=require('./auth/routes/avengersRoute')
+const cors=require('cors');
 const app = exprees();
-
+app.use(cors());
 app.use(exprees.json());
 app.use(exprees.urlencoded({ extended: true }));
 app.use(routes);
