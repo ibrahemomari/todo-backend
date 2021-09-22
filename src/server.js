@@ -6,8 +6,13 @@ const notFound = require('./error-handlers/404.js');
 const routes=require('./auth/routes/routes');
 const avengersRouts=require('./auth/routes/avengersRoute')
 const cors=require('cors');
+const corsOptions ={
+  origin:'*', 
+  credentials:true,           
+  optionSuccessStatus:200,
+}
 const app = exprees();
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(exprees.json());
 app.use(exprees.urlencoded({ extended: true }));
 app.use(routes);

@@ -5,9 +5,7 @@ const router = express.Router();
 const permissions = require("../middleware/acl.js");
 const bearerAuth = require("../middleware/bearerAuth");
 const { userCollection,users } = require("../models/index");
-const cors=require('cors');
 
-router.use(cors());
 
 // add routes
 router.get("/avengers", bearerAuth, permissions("delete"), getAvengers);
