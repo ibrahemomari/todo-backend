@@ -8,10 +8,10 @@ const { userCollection,users } = require("../models/index");
 
 // add routes
 router.get("/avengers", bearerAuth, permissions("delete"), getAvengers);
-router.get("/avenger", bearerAuth, getAvengersById);
-router.post("/avengers", bearerAuth, createAvengers);
-router.put("/avengers", bearerAuth, updateAvengers);
-router.delete("/avengers", bearerAuth, deleteAvengers);
+router.get("/todo", bearerAuth, getAvengersById);
+router.post("/todo", bearerAuth, createAvengers);
+router.put("/todo", bearerAuth, updateAvengers);
+router.delete("/todo", bearerAuth, deleteAvengers);
 
 async function getAvengers(req, res) {
   let avengers = await userCollection.read();
