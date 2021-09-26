@@ -1,29 +1,35 @@
+
+
 "use strict";
 require("dotenv").config();
 const user = require("./users");
 const { Sequelize, DataTypes } = require("sequelize");
-const DATABASE_URL = process.env.DATABASE_URL;
+const DATABASE_URL = "postgres://localhost:5432/test45";
+const todo=require('./todo');
 const Collection=require('./dataCollection');
-
-let sequelizeOptions = {
-      dialectOptions: {
-          ssl: {
-            require: true,
-            rejectUnauthorized: false,
-          }
-        }
-  };
-
+let sequelizeOptions = {
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
+    },
+  },
+};
 const sequelize = new Sequelize(DATABASE_URL,sequelizeOptions);
 
 const userModel=user(sequelize,DataTypes);
+const todoModel=todo(sequelize,DataTypes);
 
-const userCollection=new Collection(userModel);
+userModel.hasMany(todoModel, { foreignKey: 'userId', sourceKey: 'id'});
+todoModel.belongsTo(userModel, { foreignKey: 'userId', targetKey: 'id'});
+
+const todoCollection=new Collection(todoModel);
 
 
 
 module.exports = {
   db: sequelize,
   users:userModel,
-  userCollection:userCollection,
+  todoCollection:todoCollection,
+  todoModel:todoModel
 };
