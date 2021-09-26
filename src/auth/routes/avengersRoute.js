@@ -4,7 +4,7 @@ const express = require("express");
 const router = express.Router();
 const permissions = require("../middleware/acl.js");
 const bearerAuth = require("../middleware/bearerAuth");
-const { userCollection,users } = require("../models/index");
+const { userCollection,users, todoModel ,todoCollection} = require("../models/index");
 
 
 // add routes
@@ -22,44 +22,41 @@ async function getAvengers(req, res) {
 async function getAvengersById(req, res) {
   const id = req.userId;
   console.log("userrrrrrrrrrrrrrrrrrrrrrr", req.userId);
-  let avengers = await users.findOne({ where: { id: id } });
+  let avengers = await todoModel.findOne({ where: { userId: id } });
   res.status(200).json(avengers);
 }
 
 async function createAvengers(req, res) {
-  let newAvengers = req.body;
-  newAvengers.userId = req.userId;
-  let data = await users.findOne({ where: { id: newAvengers.userId } });
+  let update = req.body;
+  let data = await todoModel.findOne({ where: { userId: req.userId} });
   let id = data.dataValues.id;
   let item = data.dataValues.todo;
-  let arres = [...item, newAvengers];
-  console.log(arres);
-  let avengers = await userCollection.update(id,{ todo: arres });
-  res.status(200).json(avengers);
+  let newArray = [...item, update];
+  let toDo = await todoCollection.update(id, { todo: newArray });
+  res.send(toDo);
 }
 
 async function updateAvengers(req, res) {
   let arrayIndex = Number(req.query.index);
   let update = req.body;
-  update.userId = req.userId;
-  let data = await users.findOne({ where: { id: update.userId } });
+  let data = await todoModel.findOne({ where: { userId: req.userId } });
   let item = data.dataValues.todo;
   let id = data.dataValues.id;
   if (item.length - 1 >= arrayIndex) {
     item[arrayIndex] = update;
-    let avengers = await userCollection.update(id, { todo: item });
-    res.send(avengers);
+    let toDo = await todoCollection.update(id, { todo: item });
+    res.send(toDo);
   }
 }
 
 async function deleteAvengers(req, res) {
   let arrayIndex = Number(req.query.index);
-  let data = await users.findOne({ where: { id: req.userId } });
+  let data = await todoModel.findOne({ where: { userId: req.userId } });
   let item = data.dataValues.todo;
   let id = data.dataValues.id;
   item.splice(arrayIndex, 1);
-  let avengers = await userCollection.update(id, { todo: item });
-  res.status(200).json(avengers);
+  let toDo = await todoCollection.update(id, { todo: item });
+  res.status(200).json(toDo);
 }
 
 module.exports = router;

@@ -3,10 +3,14 @@
 const express = require('express');
 const authRouter = express.Router();
 
-const { users } = require('../models/index');
+const { users,todoCollection } = require('../models/index');
 const basicAuth = require('../middleware/basicAuth')
 const bearerAuth = require('../middleware/bearerAuth')
 const permissions = require('../middleware/acl.js')
+
+
+
+
 
 authRouter.post('/signup', async (req, res, next) => {
   try {
@@ -16,6 +20,10 @@ authRouter.post('/signup', async (req, res, next) => {
       user: userRecord,
       token: userRecord.token
     };
+    if(userRecord.role==='user'){
+      let update = req.body;
+      update.userId =userRecord.id;
+      await todoCollection.create(update);}
     res.status(201).json(output);
   } catch (e) {
     next(e.message)
