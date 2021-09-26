@@ -8,6 +8,10 @@ const basicAuth = require('../middleware/basicAuth')
 const bearerAuth = require('../middleware/bearerAuth')
 const permissions = require('../middleware/acl.js')
 
+
+
+
+
 authRouter.post('/signup', async (req, res, next) => {
   try {
     console.log("from signup ->>>>>>>>>>>>>>>>>>>>>>>>",users);

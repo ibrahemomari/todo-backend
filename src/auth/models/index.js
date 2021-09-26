@@ -4,7 +4,7 @@
 require("dotenv").config();
 const user = require("./users");
 const { Sequelize, DataTypes } = require("sequelize");
-const DATABASE_URL = "postgres://localhost:5432/test45";
+const DATABASE_URL = process.env.DATABASE_URL;
 const todo=require('./todo');
 const Collection=require('./dataCollection');
 let sequelizeOptions = {
